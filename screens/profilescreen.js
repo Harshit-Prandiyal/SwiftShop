@@ -4,10 +4,10 @@ import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles} from '../costants/colors';
 function Profilescreen() {
-  const items = useSelector((state) => state.MyCart);
+  const items = useSelector((state) => state.Favourites);
   function printMyCart() {
     
-    console.log("Cart", items);
+    console.log("Fav", items);
   }
 
   return (
