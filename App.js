@@ -15,6 +15,8 @@ import { Provider } from "react-redux";
 import {store} from './redux/store'
 import Cartscreen from "./screens/cart-screen";
 import YourOrdersScreen from "./screens/your-purchases";
+import OrderDetailScreen from "./screens/orderdetailscreen";
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 function MainscreenNavigator() {
@@ -31,6 +33,7 @@ function ProfilecreenNavigator() {
     <Stack.Navigator screenOptions={{headerShown:false}}>
       <Stack.Screen name="Profilescreen" component={Profilescreen} />
       <Stack.Screen name="YourOrdersScreen" component={YourOrdersScreen} />
+      <Stack.Screen name="OrderDetailScreen" component={OrderDetailScreen} />
     </Stack.Navigator>
   );
 }

@@ -19,7 +19,7 @@ function renderProductItem(onPress, itemdata) {
   );
 }
 
-function Likescreen({route, navigation}) {
+function Likescreen({ route, navigation }) {
   const favourites = useSelector((state) => state.Favourites);
   function onPress(product) {
     //console.log(product);
@@ -43,13 +43,11 @@ function Likescreen({route, navigation}) {
     );
   } else {
     return (
-      <View style={styles.rootContainer}>
-        <View style={styles.header}>
-          <Text style={styles.heading}>Your Favourites</Text>
-        </View>
-        <View style={{flex:1,alignContent:'center',justifyContent:'center',width:'100%'}}>
-          <Text style={{fontSize:20,color: "white",}}>You have no Favourites</Text>
-        </View>
+      <View style={emptyStyles.container}>
+        <Text style={emptyStyles.heading}>No Favorites Yet</Text>
+        <Text style={emptyStyles.description}>
+          Start adding items to your favorites!
+        </Text>
       </View>
     );
   }
@@ -78,5 +76,24 @@ const styles = StyleSheet.create({
   },
   productGrid: {
     flex: 1,
+  },
+});
+const emptyStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "black",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
+    marginBottom: 10,
+  },
+  description: {
+    fontSize: 16,
+    color: "white",
   },
 });
