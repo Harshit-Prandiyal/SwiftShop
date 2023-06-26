@@ -1,85 +1,67 @@
-import { useEffect, useState } from "react";
-
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Modal,
-  TextInput,
-  FlatList,
-} from "react-native";
+import { Text, StyleSheet, View, FlatList } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-
-import Mymodal from "../components/myModal";
-import Orderitem from "../components/orderItem";
-import { storeMyOrder ,fetchMyOrders} from "../util/http";
+import ProductItem from "../components/productItem";
 import { GlobalStyles } from "../costants/colors";
+import { useSelector } from "react-redux";
 
-function Likescreen() {
-
-  useEffect( ()=>{
-    try{
-      async function getOrders(){
-        const orders = await fetchMyOrders();
-        setOrderlist(orders);
-      }
-    }catch(error){
-      console.log(error);
-    }
-    getOrders();
-  },[] );
-
-  const [modalVisible, setModalVisible] = useState(false);
-  const [title, setTitle] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [price, setPrice] = useState(23);
-  const [orderList,setOrderlist] = useState([]);
-  
-
-
-  function onsubmit(){
-    storeMyOrder({title: title,price:price});
-    setModalVisible(false);
-    console.log('submitted!');
+function renderProductItem(onPress, itemdata) {
+  function onPressHandler() {
+    onPress(itemdata.item);
   }
-
-  function renderOrderItem(itemdata){
-    return <Orderitem title={itemdata.item.title} price={itemdata.item.price} imageUrl={itemdata.item.imageUrl}/>
-  }
-
   return (
-    <>
-      <Mymodal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        title={title}
-        setTitle={setTitle}
-        price={price}
-        setPrice={setPrice}
-        imageUrl={imageUrl}
-        setImageUrl={setImageUrl}
-        onsubmit={onsubmit}
-      />
+    <ProductItem
+      title={itemdata.item.title}
+      price={itemdata.item.price}
+      imageUrl={itemdata.item.imageUrl}
+      onPress={onPressHandler}
+    />
+  );
+}
+
+function Likescreen({route, navigation}) {
+  const favourites = useSelector((state) => state.Favourites);
+  function onPress(product) {
+    //console.log(product);
+    navigation.navigate("Product-detail-screen", { product: product });
+  }
+  if (favourites.length !== 0) {
+    return (
       <View style={styles.rootContainer}>
-        <Text style={styles.heading}>Your Orders</Text>
-        <FlatList data={orderList} keyExtractor={ (item)=> item.title } renderItem={renderOrderItem} />
-        <View style={{alignItems:'center'}}>
-        <TouchableOpacity
-          activeOpacity={0.6}
-          onPress={() => setModalVisible(!modalVisible)}
-        >
-          <Ionicons name="add-circle" size={60} color={GlobalStyles.colors.green69} />
-        </TouchableOpacity>
+        <View style={styles.header}>
+          <Text style={styles.heading}>Your Favourites</Text>
+        </View>
+        <View style={styles.productGrid}>
+          <FlatList
+            data={favourites}
+            keyExtractor={(item) => item.id}
+            renderItem={renderProductItem.bind(this, onPress)}
+            numColumns={2}
+          />
         </View>
       </View>
-    </>
-  );
+    );
+  } else {
+    return (
+      <View style={styles.rootContainer}>
+        <View style={styles.header}>
+          <Text style={styles.heading}>Your Favourites</Text>
+        </View>
+        <View style={{flex:1,alignContent:'center',justifyContent:'center',width:'100%'}}>
+          <Text style={{fontSize:20,color: "white",}}>You have no Favourites</Text>
+        </View>
+      </View>
+    );
+  }
 }
 
 export default Likescreen;
 const styles = StyleSheet.create({
+  rootContainer: {
+    paddingTop: 30,
+    flex: 1,
+    backgroundColor: GlobalStyles.colors.black69,
+  },
   heading: {
     fontSize: 24,
     fontWeight: "bold",
@@ -87,27 +69,14 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: "white",
   },
-  modalContainer: {
-    margin: 10,
-    paddingTop: 30,
-    flex: 1,
-  },
-  rootContainer: {
-    paddingTop: 30,
-    flex: 1,
-    backgroundColor: "#111111",
+  header: {
+    marginHorizontal: 10,
+    marginVertical: 5,
+    flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
   },
-  addButton: {
-    overflow: "hidden",
-  },
-  textInput: {
-    margin: 10,
-    padding: 5,
-  },
-  textInputContainer: {
-    borderColor: "black",
-    borderWidth: 1,
-    margin: 10,
+  productGrid: {
+    flex: 1,
   },
 });

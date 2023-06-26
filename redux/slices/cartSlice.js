@@ -28,6 +28,7 @@
 // });
 // export const { addToCart } = cartSlice.actions;
 // export default cartSlice.reducer;
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const cartSlice = createSlice({
@@ -60,12 +61,22 @@ const cartSlice = createSlice({
         const itemId = action.payload.id;
         const itemIndex = state.findIndex((item) => item.product.id === itemId);
         if (itemIndex !== -1) {
-         state= state.splice(itemIndex, 1);
+          state = state.splice(itemIndex, 1);
         }
       }
     },
+    deleteFromCart: (state, action) => {
+      const itemId = action.payload.id;
+      const itemIndex = state.findIndex((item) => item.product.id === itemId);
+      if (itemIndex !== -1) {
+        state = state.splice(itemIndex, 1);
+      }
+    },
+    clearCart : (state) => {
+      state=state.splice(0,state.length);
+    }
   },
 });
 
-export const { addToCart, removeFromCart } = cartSlice.actions;
+export const { addToCart, removeFromCart , deleteFromCart,clearCart } = cartSlice.actions;
 export default cartSlice.reducer;

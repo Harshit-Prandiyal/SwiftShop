@@ -45,8 +45,9 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "../costants/colors";
-export default function CartItem({ title, price, imageUrl, quantity , addItemHandler , removeItemHandler}) {
+export default function CartItem({ title, price, imageUrl, quantity , addItemHandler , removeItemHandler,deleteItemHandler}) {
   return (
+    <TouchableOpacity activeOpacity={0.6} onLongPress={deleteItemHandler}>
     <View style={styles.cartItemContainer}>
       <Image style={styles.image} source={{ uri: imageUrl }} />
       <View style={styles.textContainer}>
@@ -72,6 +73,7 @@ export default function CartItem({ title, price, imageUrl, quantity , addItemHan
         </TouchableOpacity>
       </View>
     </View>
+    </TouchableOpacity>
   );
 }
 
@@ -90,6 +92,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 3,
     marginRight: 10,
+    resizeMode: "contain",
   },
   textContainer: {
     flex: 1,

@@ -14,7 +14,7 @@ import ProductDetailScreen from "./screens/product-detail-screen";
 import { Provider } from "react-redux";
 import {store} from './redux/store'
 import Cartscreen from "./screens/cart-screen";
-
+import YourOrdersScreen from "./screens/your-purchases";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 function MainscreenNavigator() {
@@ -26,7 +26,14 @@ function MainscreenNavigator() {
     </Stack.Navigator>
   );
 }
-
+function ProfilecreenNavigator() {
+  return (
+    <Stack.Navigator screenOptions={{headerShown:false}}>
+      <Stack.Screen name="Profilescreen" component={Profilescreen} />
+      <Stack.Screen name="YourOrdersScreen" component={YourOrdersScreen} />
+    </Stack.Navigator>
+  );
+}
 export default function App() {
   return (
     <Provider store={store}>
@@ -56,7 +63,7 @@ export default function App() {
 
       <Tab.Screen
         name="Profile"
-        component={Profilescreen}
+        component={ProfilecreenNavigator}
         options={{headerShown:false,tabBarShowLabel:false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-outline" size={size} color={color} />

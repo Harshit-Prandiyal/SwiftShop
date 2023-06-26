@@ -1,16 +1,20 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity , Alert} from 'react-native';
 import { useSelector } from 'react-redux';
 import { GlobalStyles } from '../costants/colors';
 import CartItem from '../components/cartItem';
 import { useDispatch } from 'react-redux';
-import { removeFromCart , addToCart} from '../redux/slices/cartSlice';
-function renderOrderItem(addFn,removeFn,itemdata) {
-  function addItem(){
+import { removeFromCart , addToCart, deleteFromCart , clearCart} from '../redux/slices/cartSlice';
+import { addOrder } from '../redux/slices/yourOrdersSlice';
+function renderOrderItem(addFn,removeFn,deleteFn,itemdata) {
+  function addItemHandler(){
     addFn(itemdata.item.product);
   }
-  function removeItem(){
+  function removeItemHandler(){
     removeFn(itemdata.item.product.id);
+  }
+  function deleteItemHandler(){
+    deleteFn(itemdata.item.product.id);
   }
   return (
     <CartItem
@@ -18,14 +22,16 @@ function renderOrderItem(addFn,removeFn,itemdata) {
       price={itemdata.item.product.price}
       imageUrl={itemdata.item.product.imageUrl}
       quantity={itemdata.item.qty}
-      addItemHandler={addItem}
-      removeItemHandler={removeItem}
+      addItemHandler={addItemHandler}
+      removeItemHandler={removeItemHandler}
+      deleteItemHandler={deleteItemHandler}
     />
   );
 }
 
 export default function CartScreen() {
-  const cart = useSelector(state => state.MyCart);
+  const items = useSelector(state => state.MyCart);
+  const cart = items.slice().reverse();
   const total = cart.reduce((sum, item) => sum + item.product.price*item.qty, 0);
   const dispatch = useDispatch();
   function  handleAddToCart(product){
@@ -34,6 +40,24 @@ export default function CartScreen() {
   };
   function handleRemoveFromCart(id){
     dispatch(removeFromCart({id:id}))
+  }
+  function handleDeleteFromCart(id){
+    dispatch(deleteFromCart({id:id}));
+  }
+  function DeleteFromCart(id){
+    Alert.alert("Confirm Delete", "Are you sure you want to delete item .", [
+      { text: "Okay", style: "destructive", onPress: () => handleDeleteFromCart(id) },
+    ]);
+    
+  }
+  function buyButtonHandler(){
+    const date = new Date();
+    console.log(date);
+    dispatch(addOrder({cart:cart , total:total,date:date.toISOString() }));
+    Alert.alert("Purchased !", "Thanks for shopping with us", [
+      { text: "Welcome", style: "destructive", onPress: () => dispatch(clearCart())},
+    ]);
+    
   }
   if (cart.length === 0) {
     return (
@@ -48,13 +72,13 @@ export default function CartScreen() {
         <FlatList
           data={cart}
           keyExtractor={item => item.product.id}
-          renderItem={renderOrderItem.bind(this,handleAddToCart,handleRemoveFromCart)}
+          renderItem={renderOrderItem.bind(this,handleAddToCart,handleRemoveFromCart,DeleteFromCart)}
         />
         <View style={styles.totalContainer}>
           <Text style={styles.totalText}>Total:</Text>
           <Text style={styles.totalPrice}>$ {total.toFixed(2)}</Text>
         </View>
-        <TouchableOpacity style={styles.proceedButton}>
+        <TouchableOpacity style={styles.proceedButton} onPress={buyButtonHandler}>
           <Text style={styles.buttonText}>Proceed to Buy</Text>
         </TouchableOpacity>
       </View>

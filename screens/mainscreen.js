@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { fetchProducts } from "../util/http";
@@ -9,9 +15,8 @@ import { GlobalStyles } from "../costants/colors";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../redux/slices/productsSLice";
 
-
-function renderProductItem(onPress,itemdata) {
-  function onPressHandler(){
+function renderProductItem(onPress, itemdata) {
+  function onPressHandler() {
     onPress(itemdata.item);
   }
   return (
@@ -24,20 +29,20 @@ function renderProductItem(onPress,itemdata) {
   );
 }
 
-function Mainscreen({navigation}) {
+function Mainscreen({ navigation }) {
   const [Products, setProducts] = useState([]);
   const [productsFetched, setproductsFetched] = useState(false);
   const [productsDispatched, setproductsDispatched] = useState(false);
   const dispatch = useDispatch();
 
-  //handling fetchhing of products 
+  //handling fetchhing of products
   useEffect(() => {
     const getProducts = async () => {
       try {
         const products = await fetchProducts();
         setProducts(products);
         setproductsFetched(true);
-        console.log('Fetched');
+        console.log("Fetched");
       } catch (error) {
         console.log(error);
       }
@@ -47,22 +52,22 @@ function Mainscreen({navigation}) {
   }, []);
 
   //handling dispatching of products
-  if(productsFetched && !productsDispatched){
-    for(const pr in Products){
+  if (productsFetched && !productsDispatched) {
+    for (const pr in Products) {
       const payload = Products[pr];
-      //dispatch(addProduct(payload));
-      
+      dispatch(addProduct(payload));
+      //console.log(payload);
     }
     setproductsDispatched(true);
-    console.log('Dispatched');
+    console.log("Dispatched");
   }
 
   //handling navigation
-  function onPress(product){
+  function onPress(product) {
     //console.log(product);
-    navigation.navigate("Product-detail-screen",{ product : product});
+    navigation.navigate("Product-detail-screen", { product: product });
   }
-  function cartButtonHandler(){
+  function cartButtonHandler() {
     navigation.navigate("Cartscreen");
   }
 
@@ -71,13 +76,19 @@ function Mainscreen({navigation}) {
       <View style={styles.rootContainer}>
         <View style={styles.header}>
           <Text style={styles.heading}>Trending</Text>
-          <Ionicons name="cart-outline" size={24} color={GlobalStyles.colors.lightgray69}  onPress={cartButtonHandler}/>
+          <TouchableOpacity onPress={cartButtonHandler} activeOpacity={0.4}>
+            <Ionicons
+              name="cart"
+              size={24}
+              color={GlobalStyles.colors.lightgray69}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.productGrid}>
           <FlatList
             data={Products}
             keyExtractor={(item) => item.id + item.price}
-            renderItem={renderProductItem.bind(this,onPress)}
+            renderItem={renderProductItem.bind(this, onPress)}
             numColumns={2}
           />
         </View>
@@ -112,7 +123,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  productGrid:{
-    flex:1,
-  }
+  productGrid: {
+    flex: 1,
+  },
 });
