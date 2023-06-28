@@ -11,6 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { fetchProducts } from "../util/http";
 import ProductItem from "../components/productItem";
 import { GlobalStyles } from "../costants/colors";
+import LoadingOverlay from "../components/LoadingOverlay";
 
 import { useDispatch } from "react-redux";
 import { addProduct } from "../redux/slices/productsSLice";
@@ -95,11 +96,7 @@ function Mainscreen({ navigation }) {
       </View>
     );
   } else {
-    return (
-      <View styles={styles.rootContainer}>
-        <Text>Loading !!!</Text>
-      </View>
-    );
+    return <LoadingOverlay message="Preparing the app..." />;
   }
 }
 export default Mainscreen;

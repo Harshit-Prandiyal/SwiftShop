@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-
+import { GlobalStyles } from '../../costants/colors';
 import Button from '../Button';
 import Input from './Input'
 
@@ -82,7 +82,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
           />
         )}
         <View style={styles.buttons}>
-          <Button onPress={submitHandler}>
+          <Button onPress={submitHandler} color={GlobalStyles.colors.green69}>
             {isLogin ? 'Log In' : 'Sign Up'}
           </Button>
         </View>
@@ -97,4 +97,7 @@ const styles = StyleSheet.create({
   buttons: {
     marginTop: 12,
   },
+  login:{
+    backgroundColor: GlobalStyles.colors.green69,
+  }
 });

@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GlobalStyles } from '../costants/colors';
 
 function Button({ children, onPress }) {
+  
   return (
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.pressed]}
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     paddingVertical: 6,
     paddingHorizontal: 12,
-    backgroundColor: GlobalStyles.colors.primary500,
+    backgroundColor: GlobalStyles.colors.green69,
     elevation: 2,
     shadowColor: 'black',
     shadowOffset: { width: 1, height: 1 },
@@ -34,8 +35,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: 'center',
-    color: 'white',
-    fontSize: 16,
+    color: GlobalStyles.colors.black69,
+    fontSize: 18,
+    margin:5,
     fontWeight: 'bold'
   },
 });

@@ -2,14 +2,17 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { GlobalStyles } from '../costants/colors';
 
-function FlatButton({ children, onPress }) {
+function FlatButton({ children, onPress , color}) {
+  if(!color){
+    color = GlobalStyles.colors.green69;
+  }
   return (
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.pressed]}
       onPress={onPress}
     >
       <View>
-        <Text style={styles.buttonText}>{children}</Text>
+        <Text style={{...styles.buttonText,color:color}}>{children}</Text>
       </View>
     </Pressable>
   );
@@ -27,6 +30,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: 'center',
-    color: GlobalStyles.colors.primary100,
+    color: GlobalStyles.colors.black69,
   },
 });

@@ -97,9 +97,7 @@ function AuthStack() {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-        headerTintColor: "white",
-        contentStyle: { backgroundColor: GlobalStyles.colors.primary100 },
+        headerShown:false,
       }}
     >
       <Stack.Screen name="Login" component={LoginScreen} />
