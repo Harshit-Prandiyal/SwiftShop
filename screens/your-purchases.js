@@ -1,6 +1,6 @@
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
-
+import { GlobalStyles } from '../costants/colors';
 function YourOrdersScreen({navigation}){
     const items = useSelector(state => state.YourOrders);
     const orders = items.slice().reverse();
@@ -16,7 +16,7 @@ function YourOrdersScreen({navigation}){
           <Text style={styles.date}>{item.date}  {item.time}</Text>
         </View>
         <View style={styles.totalContainer}>
-          <Text style={styles.totalText}>${item.total}</Text>
+          <Text style={styles.totalText}>${item.total.toFixed(2)}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -53,46 +53,50 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: 8,
-    padding: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+    backgroundColor: GlobalStyles.colors.gray69,
+    borderRadius: 10,
     marginBottom: 10,
-    elevation: 2,
+    paddingHorizontal: 10,
   },
   avatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#e9e9e9',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: GlobalStyles.colors.green69,
+    justifyContent: "center",
+    alignItems: "center",
   },
   avatarText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'black',
+    color: GlobalStyles.colors.black69,
+    fontSize: 19,
+    fontWeight: "bold",
   },
   itemContent: {
     flex: 1,
     marginLeft: 10,
   },
   dateText: {
-    fontSize: 12,
-    color: 'gray',
+    color: GlobalStyles.colors.lightgray69,
+    fontSize: 14,
   },
   date: {
+    color: GlobalStyles.colors.white69,
     fontSize: 16,
-    fontWeight: 'bold',
+    marginTop: 5,
   },
   totalContainer: {
+    backgroundColor: GlobalStyles.colors.green69,
+    borderRadius: 5,
+    paddingVertical: 5,
     paddingHorizontal: 10,
   },
   totalText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'black',
+    color: GlobalStyles.colors.black69,
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

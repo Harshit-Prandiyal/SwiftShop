@@ -1,13 +1,15 @@
-import { View, Text, StyleSheet, FlatList,Image } from "react-native";
+import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import { GlobalStyles } from "../costants/colors";
 function renderOrderItem(itemdata) {
-    const item = itemdata.item.product;
+  const item = itemdata.item.product;
   return (
     <View style={styles.cartItemContainer}>
       <Image style={styles.image} source={{ uri: item.imageUrl }} />
       <View style={styles.textContainer}>
         <Text style={styles.titleText}>{item.title}</Text>
-        <Text style={styles.priceText}>$ {item.price}  x{itemdata.item.qty}</Text>
+        <Text style={styles.priceText}>
+          $ {item.price} x{itemdata.item.qty}
+        </Text>
       </View>
     </View>
   );
@@ -21,7 +23,9 @@ export default function OrderDetailScreen({ route }) {
   return (
     <View style={styles.rootContainer}>
       <Text style={styles.heading}>Order Details :- </Text>
-      <Text style={styles.DateTime}>{date}  {time}</Text>
+      <Text style={styles.DateTime}>
+        {date} {time}
+      </Text>
       <FlatList
         data={cart}
         keyExtractor={(item) => item.product.id}
@@ -59,13 +63,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#EAE9EA",
   },
-  DateTime:{
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#EAE9EA",
-    marginHorizontal:10,
-    marginVertical:5,
-  },
   priceText: {
     fontSize: 14,
     color: "#EAE9EA",
@@ -83,14 +80,12 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: GlobalStyles.colors.white69,
   },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  emptyText: {
-    fontSize: 18,
-    color: GlobalStyles.colors.black69,
+  DateTime: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#EAE9EA",
+    marginHorizontal: 10,
+    marginVertical: 5,
   },
   totalContainer: {
     flexDirection: "row",
@@ -109,18 +104,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: GlobalStyles.colors.white69,
-  },
-  proceedButton: {
-    backgroundColor: GlobalStyles.colors.green69,
-    paddingVertical: 12,
-    borderRadius: 4,
-    alignItems: "center",
-    marginHorizontal: 10,
-    marginBottom: 20,
-  },
-  buttonText: {
-    color: GlobalStyles.colors.black69,
-    fontSize: 16,
-    fontWeight: "bold",
   },
 });

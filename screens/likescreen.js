@@ -36,7 +36,7 @@ function Likescreen({ route, navigation }) {
             data={favourites}
             keyExtractor={(item) => item.id}
             renderItem={renderProductItem.bind(this, onPress)}
-            numColumns={2}
+            numColumns={1}
           />
         </View>
       </View>

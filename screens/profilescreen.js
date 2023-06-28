@@ -1,15 +1,40 @@
 import { useEffect, useState } from "react";
-import { Text, StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "../costants/colors";
-import { useSelector } from "react-redux";
-function Profilescreen({route,navigation}) {
-  const orders = useSelector(state => state.YourOrders);
-  function testFn(){
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../redux/slices/AuthSlice";
+
+import IconButton from "../components/IconButton";
+function Profilescreen({ route, navigation }) {
+  const orders = useSelector((state) => state.YourOrders);
+  const dispatch = useDispatch();
+  function logoutButtonHandler() {
+    Alert.alert("Confirm Logout", "Are you sure you want to log out", [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Log out Canceled'),
+        style: 'cancel',
+      },
+      {
+        text: "Okay",
+        style: "destructive",
+        onPress: () => dispatch(logout()),
+      },
+    ]);
+  }
+  function testFn() {
     console.log(orders);
   }
-  function yourordersButtonHandler(){
-    navigation.navigate('YourOrdersScreen');
+  function yourordersButtonHandler() {
+    navigation.navigate("YourOrdersScreen");
   }
   return (
     <View style={styles.container}>
@@ -18,36 +43,36 @@ function Profilescreen({route,navigation}) {
       <View style={styles.section1}>
         <Image
           source={{
-            uri: "https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg",
-          }} // Replace with your circular avatar image source
+            uri:"https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg?w=740&t=st=1687852759~exp=1687853359~hmac=2b1baa5fae77a1d29ef0f9de49569eb225e67a0e687129a0ab3584d19fcf3e74",
+          }}
           style={styles.avatar}
         />
+
         <View style={styles.profileInfo}>
-          <Text style={styles.name}>name</Text>
-          <TouchableOpacity activeOpacity={0.4} >
-          <Ionicons
-            name="create-outline"
-            size={30}
-            color={"gray"}
-          />
-        </TouchableOpacity>
+          <Text style={styles.name}>Enter Name</Text>
+          <TouchableOpacity activeOpacity={0.4}>
+            <Ionicons name="create-outline" size={30} color={"gray"} />
+          </TouchableOpacity>
         </View>
       </View>
 
       <View style={styles.section2}>
-        <TouchableOpacity style={styles.element}  >
+        <TouchableOpacity style={styles.element}>
           <Text style={styles.elementText}>Account</Text>
         </TouchableOpacity>
-        <View style={styles.separator}  />
-        <TouchableOpacity style={styles.element} onPress={yourordersButtonHandler} >
+        <View style={styles.separator} />
+        <TouchableOpacity
+          style={styles.element}
+          onPress={yourordersButtonHandler}
+        >
           <Text style={styles.elementText}>Your Orders</Text>
         </TouchableOpacity>
         <View style={styles.separator} />
-        <TouchableOpacity style={styles.element} onPress={testFn}>
+        <TouchableOpacity style={styles.element}>
           <Text style={styles.elementText}>Settings</Text>
         </TouchableOpacity>
         <View style={styles.separator} />
-        <TouchableOpacity style={styles.element}>
+        <TouchableOpacity style={styles.element} onPress={logoutButtonHandler}>
           <Text style={styles.elementText}>Log out</Text>
         </TouchableOpacity>
       </View>
@@ -80,6 +105,8 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
+    //backgroundColor: "white",
+    resizeMode: "center",
   },
   profileInfo: {
     flex: 1,
@@ -93,7 +120,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
-  
+
   section2: {
     marginBottom: 20,
   },
