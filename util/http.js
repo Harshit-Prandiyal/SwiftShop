@@ -3,29 +3,40 @@ import Product from "../models/product";
 
 const firebase_url ='https://react-native-tut-241d2-default-rtdb.firebaseio.com' ; 
 const products_url = 'https://fakestoreapi.com/products';
-export function storeMyOrder(orderData) {
-    axios.post(firebase_url+'/orders.json', orderData)
+//firebase_url+ '/testing.json'
+//firebase_url+'/orders.json'
+export function storeMyOrder(orderData,email) {
+   const newUrl = firebase_url+'/' + email+'.json';
+   console.log(newUrl);
+    axios.post(newUrl, orderData)
       .then(response => {
-        //console.log('Order stored successfully:', response);
+        console.log('Order stored successfully:', response);
       })
       .catch(error => {
-        console.error('Error storing order:', error);
+        if (error.response) {
+          console.log("Error response:", error.response.data);
+          console.log("Error status code:", error.response.status);
+          console.log("Error headers:", error.response.headers);
+        } else {
+          console.log("Error message:", error.message);
+        }
       });
 }
 
-export async function fetchMyOrders(){
-    const response = await axios.get(firebase_url+'/orders.json');
-    //console.log(response.data);
-    const orders=[];
-    for(const key in response.data){
-        const order ={
-            id:key,
-            title:response.data[key].title,
-            price:response.data[key].price,
-        };
-        orders.push(order);
-    }
-    return orders;
+export async function fetchMyOrders(email){
+  const newUrl = firebase_url+'/' + email+'.json';
+    const response = await axios.get(newUrl);
+    console.log(response.data);
+    // const orders=[];
+    // for(const key in response.data){
+    //     const order ={
+    //         id:key,
+    //         title:response.data[key].title,
+    //         price:response.data[key].price,
+    //     };
+    //     orders.push(order);
+    // }
+    // return orders;
 }
 export async function fetchProducts(){
   const response = await axios.get(products_url);

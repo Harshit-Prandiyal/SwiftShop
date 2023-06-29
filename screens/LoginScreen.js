@@ -6,12 +6,13 @@ import LoadingOverlay from "../components/LoadingOverlay";
 import { login } from "../util/auth";
 import { useDispatch } from "react-redux";
 import { authenticate } from "../redux/slices/AuthSlice";
-
+import { setEmail } from "../redux/slices/userInfoSlice";
 function LoginScreen() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const dispatch = useDispatch();
   async function loginHandler({ email, password }) {
     setIsAuthenticating(true);
+    dispatch(setEmail({email:email}));
     try {
       const token = await login(email, password);
       dispatch(authenticate({token:token}));

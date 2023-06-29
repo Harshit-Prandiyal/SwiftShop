@@ -107,7 +107,9 @@ function AuthStack() {
 }
 function Navigation() {
   const auth = useSelector((state) => state.Authentication);
-  console.log(auth);
+  //console.log(auth);
+  const user = useSelector((state) => state.UserInfo);
+  //console.log(user.email);
   return (
     <NavigationContainer>
      {!auth.isAuthenticated && <AuthStack />}
