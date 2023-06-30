@@ -15,10 +15,12 @@ function renderOrderItem(itemdata) {
   );
 }
 export default function OrderDetailScreen({ route }) {
+
   const cart = route.params.order.cart;
   const total = route.params.order.total;
   const date = route.params.order.date;
   const time = route.params.order.time;
+  
   return (
     <View style={styles.rootContainer}>
       <Text style={styles.heading}>Order Details :- </Text>
