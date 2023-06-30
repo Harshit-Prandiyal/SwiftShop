@@ -14,17 +14,13 @@ import { logout } from "../redux/slices/AuthSlice";
 
 import IconButton from "../components/IconButton";
 import { storeMyOrder,fetchMyOrders } from "../util/http";
-
+import { initiateClose } from "../util/appclose";
+import { initiateStart } from "../util/appstart";
 function Profilescreen({ route, navigation }) {
   const orders = useSelector((state) => state.YourOrders);
   const user = useSelector((state) => state.UserInfo);
-  let newmail="";
-    for(const i in user.email){
-      if(user.email[i]!=='.'){
-        newmail+=user.email[i];
-      }
-        
-    }
+  const cart = useSelector((state) => state.MyCart);
+  const favs = useSelector((state) => state.Favourites);
   const dispatch = useDispatch();
   function logoutButtonHandler() {
     Alert.alert("Confirm Logout", "Are you sure you want to log out", [
@@ -51,13 +47,11 @@ function Profilescreen({ route, navigation }) {
         text: "Okay",
         style: "destructive",
         onPress: () =>
-        fetchMyOrders( newmail),
+        initiateStart(products,user.email),
       },
     ]);
   }
   function testFn() {
-    
-    console.log( newmail);
     Alert.alert("Confirm storing", "Are you sure you want to store orders", [
       {
         text: "Cancel",
@@ -67,8 +61,7 @@ function Profilescreen({ route, navigation }) {
       {
         text: "Okay",
         style: "destructive",
-        onPress: () =>
-        storeMyOrder( { testing : "This is for testing"} ,newmail),
+        onPress: () =>initiateClose(cart,orders,favs,user.email),
       },
     ]);
   }

@@ -19,7 +19,6 @@ export default function OrderDetailScreen({ route }) {
   const total = route.params.order.total;
   const date = route.params.order.date;
   const time = route.params.order.time;
-  console.log(route.params.order);
   return (
     <View style={styles.rootContainer}>
       <Text style={styles.heading}>Order Details :- </Text>

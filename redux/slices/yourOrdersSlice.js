@@ -4,10 +4,13 @@ const yourordersSlice = createSlice({
   name: "YourOrders",
   initialState: [],
   reducers: {
+    initialiseOrders: (state, action) => {
+      return action.payload;
+    },
     addOrder: (state, action) => {
       state.push(action.payload);
     },
   },
 });
-export const { addOrder } = yourordersSlice.actions;
+export const { addOrder ,initialiseOrders } = yourordersSlice.actions;
 export default yourordersSlice.reducer;

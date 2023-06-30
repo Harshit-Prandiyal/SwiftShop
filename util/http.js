@@ -8,7 +8,7 @@ const products_url = 'https://fakestoreapi.com/products';
 export function storeMyOrder(orderData,email) {
    const newUrl = firebase_url+'/' + email+'.json';
    console.log(newUrl);
-    axios.post(newUrl, orderData)
+    axios.put(newUrl, orderData)
       .then(response => {
         console.log('Order stored successfully:', response);
       })
@@ -26,17 +26,8 @@ export function storeMyOrder(orderData,email) {
 export async function fetchMyOrders(email){
   const newUrl = firebase_url+'/' + email+'.json';
     const response = await axios.get(newUrl);
-    console.log(response.data);
-    // const orders=[];
-    // for(const key in response.data){
-    //     const order ={
-    //         id:key,
-    //         title:response.data[key].title,
-    //         price:response.data[key].price,
-    //     };
-    //     orders.push(order);
-    // }
-    // return orders;
+    //console.log(response.data);
+    return response.data;
 }
 export async function fetchProducts(){
   const response = await axios.get(products_url);

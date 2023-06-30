@@ -13,9 +13,12 @@ import ProductItem from "../components/productItem";
 import { GlobalStyles } from "../costants/colors";
 import LoadingOverlay from "../components/LoadingOverlay";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../redux/slices/productsSLice";
-
+import { initialiseCart } from "../redux/slices/cartSlice";
+import { initiateStart } from "../util/appstart";
+import { initialiseFavourites } from "../redux/slices/favouriteSlice";
+import { initialiseOrders } from "../redux/slices/yourOrdersSlice";
 function renderProductItem(onPress, itemdata) {
   function onPressHandler() {
     onPress(itemdata.item);
@@ -35,7 +38,7 @@ function Mainscreen({ navigation }) {
   const [productsFetched, setproductsFetched] = useState(false);
   const [productsDispatched, setproductsDispatched] = useState(false);
   const dispatch = useDispatch();
-
+  const user = useSelector((state) => state.UserInfo);
   //handling fetchhing of products
   useEffect(() => {
     const getProducts = async () => {
@@ -59,8 +62,21 @@ function Mainscreen({ navigation }) {
       dispatch(addProduct(payload));
       //console.log(payload);
     }
-    setproductsDispatched(true);
-    console.log("Dispatched");
+    const getData = async () => {
+      try {
+        const userData = await initiateStart(Products, user.email);
+        //console.log('User Data',userData.cart);
+        dispatch(initialiseCart(userData.cart));
+        dispatch(initialiseFavourites(userData.Favourites));
+        dispatch(initialiseOrders(userData.orders));
+        setproductsDispatched(true);
+        console.log("Dispatched");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getData();
   }
 
   //handling navigation
