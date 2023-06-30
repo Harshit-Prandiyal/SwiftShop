@@ -19,6 +19,7 @@ import { initialiseCart } from "../redux/slices/cartSlice";
 import { initiateStart } from "../util/appstart";
 import { initialiseFavourites } from "../redux/slices/favouriteSlice";
 import { initialiseOrders } from "../redux/slices/yourOrdersSlice";
+import { setName } from "../redux/slices/userInfoSlice";
 function renderProductItem(onPress, itemdata) {
   function onPressHandler() {
     onPress(itemdata.item);
@@ -43,42 +44,51 @@ function Mainscreen({ navigation }) {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const products = await fetchProducts();
-        setProducts(products);
-        setproductsFetched(true);
-        console.log("Fetched");
+        if (!productsFetched) {
+          const products = await fetchProducts();
+          setProducts(products);
+          setproductsFetched(true);
+          console.log("Fetched");
+        }
       } catch (error) {
         console.log(error);
       }
     };
 
     getProducts();
+    
   }, []);
-
-  //handling dispatching of products
-  if (productsFetched && !productsDispatched) {
-    for (const pr in Products) {
-      const payload = Products[pr];
-      dispatch(addProduct(payload));
-      //console.log(payload);
-    }
-    const getData = async () => {
-      try {
+  const getData = async () => {
+    try {
+      if (!productsDispatched && !user.newUser) {
         const userData = await initiateStart(Products, user.email);
-        //console.log('User Data',userData.cart);
+        for (const pr in Products) {
+          const payload = Products[pr];
+          dispatch(addProduct(payload));
+        }
+
         dispatch(initialiseCart(userData.cart));
         dispatch(initialiseFavourites(userData.Favourites));
         dispatch(initialiseOrders(userData.orders));
+        dispatch(setName({ name: userData.name }));
+        setproductsDispatched(true);
+        
+      }else if(user.newUser){
+        for (const pr in Products) {
+          const payload = Products[pr];
+          dispatch(addProduct(payload));
+        }
         setproductsDispatched(true);
         console.log("Dispatched");
-      } catch (error) {
-        console.log(error);
       }
-    };
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  if(productsFetched && !productsDispatched){
     getData();
   }
-
   //handling navigation
   function onPress(product) {
     //console.log(product);
@@ -88,7 +98,7 @@ function Mainscreen({ navigation }) {
     navigation.navigate("Cartscreen");
   }
 
-  if (productsFetched) {
+  if (productsFetched && productsDispatched) {
     return (
       <View style={styles.rootContainer}>
         <View style={styles.header}>

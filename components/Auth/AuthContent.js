@@ -14,6 +14,7 @@ function AuthContent({ isLogin, onAuthenticate }) {
     password: false,
     confirmEmail: false,
     confirmPassword: false,
+    name : false,
   });
 
   function switchAuthModeHandler() {
@@ -24,8 +25,8 @@ function AuthContent({ isLogin, onAuthenticate }) {
     }
   }
 
-  function submitHandler(credentials) {
-    let { email, confirmEmail, password, confirmPassword } = credentials;
+  function submitHandler(credentials) { 
+    let { email, confirmEmail, password, confirmPassword ,name} = credentials;
 
     email = email.trim();
     password = password.trim();
@@ -34,8 +35,8 @@ function AuthContent({ isLogin, onAuthenticate }) {
     const passwordIsValid = password.length > 6;
     const emailsAreEqual = email === confirmEmail;
     const passwordsAreEqual = password === confirmPassword;
-
-    if (
+    const nameIsValid = isLogin ? true :  name.length > 0;
+    if ( !nameIsValid ||
       !emailIsValid ||
       !passwordIsValid ||
       (!isLogin && (!emailsAreEqual || !passwordsAreEqual))
@@ -46,10 +47,15 @@ function AuthContent({ isLogin, onAuthenticate }) {
         confirmEmail: !emailIsValid || !emailsAreEqual,
         password: !passwordIsValid,
         confirmPassword: !passwordIsValid || !passwordsAreEqual,
+        name : !nameIsValid,
       });
       return;
     }
-    onAuthenticate({ email, password });
+    if(isLogin){
+      onAuthenticate({ email, password });
+      return;
+    }
+    onAuthenticate({ email, password ,name});
   }
 
   return (

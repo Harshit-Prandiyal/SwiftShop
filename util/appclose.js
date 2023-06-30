@@ -6,11 +6,11 @@ function convertToFirebaseCart(cart){
     }
     return FirebaseCart;
 }
-export function initiateClose(cart,orders,favourites,email){
+export function initiateClose(cart,orders,favourites,user){
     let newmail = "";
-  for (const i in email) {
-    if (email[i] !== ".") {
-      newmail += email[i];
+  for (const i in user.email) {
+    if (user.email[i] !== ".") {
+      newmail += user.email[i];
     }
   }
     //preparing cart object
@@ -33,5 +33,5 @@ export function initiateClose(cart,orders,favourites,email){
     }
     
     //console.log(FirebaseOrders);
-    storeMyOrder( { cart : FirebaseCart,Favourites: FirebaseFavourites,orders: FirebaseOrders } ,newmail);
+    storeMyOrder( {name : user.name, cart : FirebaseCart,Favourites: FirebaseFavourites,orders: FirebaseOrders  } ,newmail);
 }

@@ -2,17 +2,17 @@ import { fetchMyOrders } from "./http";
 import { UseSelector, useSelector } from "react-redux/es/hooks/useSelector";
 function fetchFromFirebase(email) {
   const data = fetchMyOrders(email);
-  //console.log(data);
   return data;
 }
 export async function initiateStart(products, email) {
+  console.log(email);
   let newmail = "";
   for (const i in email) {
     if (email[i] !== ".") {
       newmail += email[i];
     }
   }
-  let convertedObject = { cart: [], Favourites: [], orders: [] };
+  let convertedObject = { cart: [], Favourites: [], orders: [] ,name:""};
   const data = await fetchFromFirebase(newmail);
 
   //console.log(data);
@@ -66,9 +66,9 @@ export async function initiateStart(products, email) {
   }
 
   convertedObject.orders = orderPayload;
+  convertedObject.name = data.name;
+  //console.log(data.name);
 
-  //console.log("Fetched");
-
-  //console.log(convertedObject);
+  console.log(convertedObject);
   return convertedObject;
 }

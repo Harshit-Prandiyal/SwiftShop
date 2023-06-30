@@ -22,6 +22,7 @@ function Profilescreen({ route, navigation }) {
   const cart = useSelector((state) => state.MyCart);
   const favs = useSelector((state) => state.Favourites);
   const dispatch = useDispatch();
+  console.log(user);
   function logoutButtonHandler() {
     Alert.alert("Confirm Logout", "Are you sure you want to log out", [
       {
@@ -36,32 +37,18 @@ function Profilescreen({ route, navigation }) {
       },
     ]);
   }
-  function fetchtest(){
-    Alert.alert("Confirm storing", "Are you sure you want to store orders", [
+  
+  function saveUserData() {
+    Alert.alert("Confirm storing", "Are you sure you want to store your data", [
       {
         text: "Cancel",
-        onPress: () => console.log("Log out Canceled"),
+        onPress: () => console.log("Saving data Canceled"),
         style: "cancel",
       },
       {
         text: "Okay",
         style: "destructive",
-        onPress: () =>
-        initiateStart(products,user.email),
-      },
-    ]);
-  }
-  function testFn() {
-    Alert.alert("Confirm storing", "Are you sure you want to store orders", [
-      {
-        text: "Cancel",
-        onPress: () => console.log("Log out Canceled"),
-        style: "cancel",
-      },
-      {
-        text: "Okay",
-        style: "destructive",
-        onPress: () =>initiateClose(cart,orders,favs,user.email),
+        onPress: () =>initiateClose(cart,orders,favs,user),
       },
     ]);
   }
@@ -83,7 +70,7 @@ function Profilescreen({ route, navigation }) {
         />
 
         <View style={styles.profileInfo}>
-          <Text style={styles.name}>Enter Name</Text>
+          <Text style={styles.name}>{ user.name ? user.name : "Enter Name"}</Text>
           <TouchableOpacity activeOpacity={0.4}>
             <Ionicons name="create-outline" size={30} color={"gray"} />
           </TouchableOpacity>
@@ -91,7 +78,7 @@ function Profilescreen({ route, navigation }) {
       </View>
 
       <View style={styles.section2}>
-        <TouchableOpacity style={styles.element} onPress={fetchtest}>
+        <TouchableOpacity style={styles.element} >
           <Text style={styles.elementText}>Account</Text>
         </TouchableOpacity>
         <View style={styles.separator} />
@@ -102,8 +89,8 @@ function Profilescreen({ route, navigation }) {
           <Text style={styles.elementText}>Your Orders</Text>
         </TouchableOpacity>
         <View style={styles.separator} />
-        <TouchableOpacity style={styles.element} onPress={testFn}>
-          <Text style={styles.elementText}>Settings</Text>
+        <TouchableOpacity style={styles.element} onPress={saveUserData} >
+          <Text style={styles.elementText}>Save Data</Text>
         </TouchableOpacity>
         <View style={styles.separator} />
         <TouchableOpacity style={styles.element} onPress={logoutButtonHandler}>
