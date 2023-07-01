@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Product from "../models/product";
 
-const firebase_url ='https://react-native-tut-241d2-default-rtdb.firebaseio.com' ; 
+const firebase_url  ; 
 const products_url = 'https://fakestoreapi.com/products';
 //firebase_url+ '/testing.json'
 //firebase_url+'/orders.json'
