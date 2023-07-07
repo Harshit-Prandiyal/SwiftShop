@@ -14,10 +14,10 @@ Swift-Shop is a mobile application built using React Native that serves as an E-
 ## Dependencies
 ### The project utilizes the following main dependencies:
 
--React Native
--Redux Toolkit
--React Navigation
--Firebase
+- React Native
+- Redux Toolkit
+- React Navigation
+- Firebase
 
 ## API Endpoints
 - `https://fakestoreapi.com/products` : Fetches the list of products.
@@ -32,7 +32,6 @@ git clone https://github.com/your-username/Swift-Shop.git
 2. Navigate to the project directory and install it:
  ```shell
 cd Swift-Shop
-npm install
 ```
 3. Install the dependencies:
 ```shell
