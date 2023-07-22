@@ -19,6 +19,8 @@ function SignupScreen() {
       dispatch(setName({name:name}));
       dispatch(setEmail({email:email}));
     } catch (error) {
+      console.log("error in sign up screen");
+
       Alert.alert(
         "Authentication failed",
         "Could not create user, please check your input and try again later."

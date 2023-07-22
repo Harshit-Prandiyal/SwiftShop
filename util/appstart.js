@@ -15,7 +15,7 @@ export async function initiateStart(products, email) {
   let convertedObject = { cart: [], Favourites: [], orders: [] ,name:""};
   const data = await fetchFromFirebase(newmail);
 
-  //console.log(data);
+  console.log(data);
   //console.log(data.Favourites);
   let favPayload = [];
   let cartPayload = [];

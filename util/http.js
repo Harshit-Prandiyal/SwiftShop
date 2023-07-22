@@ -25,7 +25,16 @@ export function storeMyOrder(orderData,email) {
 
 export async function fetchMyOrders(email){
   const newUrl = firebase_url+'/' + email+'.json';
-    const response = await axios.get(newUrl);
+    const response = await axios.get(newUrl)
+    .catch(error => {
+      if (error.response) {
+        console.log("Error response:", error.response.data);
+        console.log("Error status code:", error.response.status);
+        console.log("Error headers:", error.response.headers);
+      } else {
+        console.log("Error message:", error.message);
+      }
+    });
     //console.log(response.data);
     return response.data;
 }

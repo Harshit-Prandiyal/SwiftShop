@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-
+import { useState,useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,8 +20,9 @@ import OrderDetailScreen from "./screens/orderdetailscreen";
 //authentication
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
-import { UseSelector } from "react-redux";
-
+import { UseSelector,useDispatch } from "react-redux";
+import { authenticate } from "./redux/slices/AuthSlice";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -117,11 +118,38 @@ function Navigation() {
     </NavigationContainer>
   );
 }
+function Root() {
+  const [isTryingLogin, setIsTryingLogin] = useState(true);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    async function fetchToken() {
+      const storedToken = await AsyncStorage.getItem('token');
+
+      if (storedToken) {
+        dispatch(authenticate({token:storedToken}));
+      }
+
+      setIsTryingLogin(false);
+    }
+
+    fetchToken();
+  }, []);
+
+  if (isTryingLogin) {
+    return (
+    <View style={{flex:1,justifyContent:"center",alignItems:'center'}}  > 
+      <Text>Loading...</Text>
+    </View>
+    );
+  }
+
+  return <Navigation />;
+}
 export default function App() {
   return (
     <Provider store={store}>
       <StatusBar style="light" />
-      <Navigation />
+      <Root />
     </Provider>
   );
 }

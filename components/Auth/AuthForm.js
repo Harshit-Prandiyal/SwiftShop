@@ -15,7 +15,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
     confirmEmail: emailsDontMatch,
     password: passwordIsInvalid,
     confirmPassword: passwordsDontMatch,
-    namne : nameIsInvalid,
+    name : nameIsInvalid,
   } = credentialsInvalid;
 
   function updateInputValueHandler(inputType, enteredValue) {
